@@ -1,0 +1,152 @@
+import React from 'react';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import { withStyles } from '@material-ui/core/styles';
+
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
+
+const styles = {}
+
+
+const u =   JSON.parse(localStorage.getItem('current_user'));
+
+
+/* Это конечно неправильно, но пока так */
+
+// покажет блок статистики
+
+const MicroStaticTable = ({g, statistic}) => {
+
+        switch (parseInt(g)) {
+            case 0:
+                /* Супер админ */
+                return (
+                     <Table style={{width:'50%'}}>
+                          <TableBody>
+                     <TableRow key={1}>
+                      <TableCell>
+                          Тут будет вся инфа
+                      </TableCell>
+                    </TableRow>
+                          </TableBody>
+                    </Table>
+                )
+                /* админ кабинета */
+            case 1:
+                return (
+                       <Table style={{width:'50%'}}>
+                            <TableBody>
+             <TableRow key={1}>
+              <TableCell>
+                Всего пользователей:
+              </TableCell>
+              <TableCell align="right">
+                0
+              </TableCell>
+            </TableRow>
+            <TableRow key={2}>
+              <TableCell>
+            Всего пользователей с типом "Речевой аналитик":
+              </TableCell>
+              <TableCell align="right">
+                0
+              </TableCell>
+            </TableRow>
+            <TableRow key={3}>
+              <TableCell>
+                Звонков прослушено аналитиками (всего):
+              </TableCell>
+              <TableCell align="right">
+                0
+              </TableCell>
+            </TableRow>
+            <TableRow key={4}>
+              <TableCell>
+                Звонков прослушено аналитиками сегодня:
+              </TableCell>
+              <TableCell align="right">
+                0
+              </TableCell>
+            </TableRow>
+            <TableRow key={5}>
+              <TableCell>
+                Самый активный аналитик:
+              </TableCell>
+              <TableCell align="right">
+                Вася
+              </TableCell>
+
+            </TableRow>
+            </TableBody>
+            </Table>
+                )
+            case 2:
+                /* слухач */
+            return (
+             <Table style={{width:'50%'}}>
+                 <TableBody>
+            <TableRow key={1}>
+              <TableCell>
+                Звонков прослушено (всего):
+              </TableCell>
+              <TableCell align="right">
+                0
+              </TableCell>
+            </TableRow>
+            <TableRow key={2}>
+              <TableCell>
+                Звонков прослушено сегодня:
+              </TableCell>
+              <TableCell align="right">
+                0
+              </TableCell>
+            </TableRow>
+                 </TableBody>
+            </Table>
+            )
+
+        }
+
+}
+
+// покажет шапку
+function fTextContent(g) {
+    switch (parseInt(g)) {
+        case 0:
+            return 'У вас полные права доступа. Вы можете создавать/редактировать клиентов, пользователей.' +
+                ' Добавлять/удалять теги, настраивать фильтры и многое другое.';
+
+        case 1:
+            return 'Вы можете создавать новых пользователей с типом доступа "Речевой аналитик". Добавлять/удалять теги, фильтры, настраивать поля отчета.';
+
+        case 2:
+            return 'Вы можете прослушивать записи звонков и проставлять необходимые теги';
+
+    }
+}
+
+
+const MyDashBoard = () => (
+<div>
+    <Card>
+        <CardHeader title={ "Здравствуйте, " + u.users_name + "!"} />
+        <CardContent>
+            Ваша группа: <b>{u.group.name}</b>. <br/>
+            {fTextContent(u.group.id)}
+        </CardContent>
+    </Card>
+    <br/>
+    <Card>
+        <CardHeader title={ "Стастистика " } />
+        <CardContent>
+            <MicroStaticTable g={u.group.id}/>
+        </CardContent>
+    </Card>
+</div>
+);
+
+export default withStyles(styles)(MyDashBoard);
